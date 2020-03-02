@@ -1,28 +1,30 @@
-#import pandas as pd
-
-def agregaColumnas(miPadron, miDistrito):
+def agregaColumnas(miPadron):
 #agrega columna provincia y usando los numeros de la cedula convierte ese numero en nombre de provincias
     miPadron['Provincia'] = miPadron['Cedula'].astype(str)
     miPadron['Provincia'] = miPadron['Provincia'].str[0:1]
     miPadron['Provincia'] = miPadron['Provincia'].replace({'1':'San Jose', '2':'Alajuela', '3':'Cartago','4':'Heredia','5':'Guanacaste','6':'Puntarenas','7':'Limon','8':'Nacionalizado','9':'CasosEspeciales'})
     miPadron['Count'] = 1
+    return (miPadron)
+
+        
+def agregaColumnaDistrito (miDistrito):    
     miDistrito['Count'] = 1
-    return miPadron, miDistrito
+    return (miDistrito)
 
 #Calcula votantes por provincia
-def votantesPorProvincia():
+def votantesPorProvincia(miPadron):
     resultado = miPadron['Provincia'].value_counts().reset_index()
     resultado.columns = ['Provincia','Catidad de Votantes']
-    return print(resultado)
+    return (resultado)
 
 #ListaVotantes por variable selecionada
-def ListaVotantesPorProvincia():
+def ListaVotantesPorProvincia(miPadron):
     resultado = miPadron.loc[miPadron['Provincia'] == varProvincia]
-    return print(resultado)
+    return (resultado)
 
 def ListaVotantePorCedula():
     resultado = miPadron.loc[miPadron['Cedula'] == varCedula]   
-    return print(resultado)
+    return (resultado)
 
 #Calcula vontantes por sexo
 def votantesPorSexo(miPadron):
@@ -30,19 +32,19 @@ def votantesPorSexo(miPadron):
     miPadron['Sexo'] = miPadron['Sexo'].replace({'1':'Masculino','2':'Fememino'})
     resultado = miPadron['Sexo'].value_counts().reset_index()
     resultado.columns = ['Sexo','Cantidad']
-    return print(miPadron)
+    return (resultado)
 
 #cuenta distritos electorales por provincia 
-def DistritoPorProvincia():
+def DistritoPorProvincia(miDistrito):
     resultado = miDistrito['Provincia'].value_counts().reset_index()
     resultado.columns = ['Provincia','Cantidad Distritos']
-    return print(resultado)
+    return (resultado)
 
 #cuenta distritos electorales por Canton
-def DistritoPorCanton():
+def DistritoPorCanton(miDistrito):
     resultado = miDistrito['Canton'].value_counts().reset_index()
-    resultado.columns = ['Canto','Distritos Electorales']
-    return print(resultado)
+    resultado.columns = ['Canton','Distritos Electorales']
+    return (resultado)
 
 ##def CantonPorProvincia():
  #   cantonProvincia = miDistrito.groupby('Provincia').agg({'Canton'})

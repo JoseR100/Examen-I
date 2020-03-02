@@ -1,40 +1,48 @@
+
+from flask import Flask, request, render_template, session, redirect
+import numpy as np
 import pandas as pd
-from flask import Flask, render_template
 import manipuladatos
 
 
+app = Flask(__name__)
 
-#Carga el padron nacional en una varialble llamada miPadronm se utiliza el ISO para poder utilizar los difentes unicodes.
-Padron = pd.read_csv('./Data/PADRON_COMPLETO.csv',encoding='ISO-8859-1')
-Distrito = pd.read_csv('./Data/Distelec.csv',encoding='ISO-8859-1')
+#df = pd.read_csv('./Data/PADRON.csv',encoding='ISO-8859-1')
 
-manipuladatos.agregaColumnas(Padron,Distrito)
-
-
-app = Flask(__name__) #this
-
-"""Metodos HTTP CON LOS QUE ME COMUNICO
-CON LA WEB, POR MEDIO DE ATTRIBUTOS, USANDO
-EL URL SIEMPRE."""
 
 @app.route("/")
 def index():
-    manipuladatos.agregaColumnas(Padron,Distrito)
     return render_template('home.html')
 
+@app.route('/disxprovincia', methods=("POST", "GET"))
+def html_disxprovincia():
+    df1 = pd.read_csv('./Data/Distelec.csv',encoding='ISO-8859-1')
+    df1 = manipuladatos.agregaColumnaDistrito(df1)
+    df1 = manipuladatos.DistritoPorProvincia(df1)
+    return render_template('disxprovincia.html',  tables=[df1.to_html(classes='data')], titles=df1.columns.values)
 
 
-@app.route("/about")
-def acercade():
-    return render_template('about.html')
+@app.route('/disxcanton', methods=("POST", "GET"))
+def html_disxcanton():
+    df1 = pd.read_csv('./Data/Distelec.csv',encoding='ISO-8859-1')
+    df1 = manipuladatos.agregaColumnaDistrito(df1)
+    df1 = manipuladatos.DistritoPorCanton(df1)
+    return render_template('disxcanton.html',  tables=[df1.to_html(classes='data')], titles=df1.columns.values)    
 
 @app.route('/xSexo', methods=("POST", "GET"))
-def ListadoxSexo():
-    votaxSexo = manipuladatos.votantesPorSexo(Padron)
-    return render_template('xSexo.html',  table=[votaxSexo])  
+def html_xSexo():
+    df1 = pd.read_csv('./Data/padron.csv',encoding='ISO-8859-1')
+    df1 = manipuladatos.agregaColumnas(df1)
+    df1 = manipuladatos.votantesPorSexo(df1)
+    return render_template('xSexo.html',  tables=[df1.to_html(classes='data')], titles=df1.columns.values) 
 
+@app.route('/xProvincia', methods=("POST", "GET"))
+def html_xProvinca():
+    df1 = pd.read_csv('./Data/padron.csv',encoding='ISO-8859-1')
+    df1 = manipuladatos.agregaColumnas(df1)
+    df1 = manipuladatos.votantesPorProvincia(df1)
+    return render_template('xProvincia.html',  tables=[df1.to_html(classes='data')], titles=df1.columns.values) 
 
 if __name__ == '__main__':
     app.run()
-
 
