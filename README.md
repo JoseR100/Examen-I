@@ -64,3 +64,13 @@ git pull
 git merge
 Este comando se usa para fusionar una rama con otra rama activa:
 git merge <branch-name>
+
+git init
+
+git add .
+
+git commit -m "first commit"
+
+git remote add origin https://github.com/NOMBRE_USUARIO/NOMBRE_PROYECTO.git
+
+git push -u origin master
