@@ -22,17 +22,32 @@ def ListaVotantesPorProvincia(miPadron):
     resultado = miPadron.loc[miPadron['Provincia'] == varProvincia]
     return (resultado)
 
-def ListaVotantePorCedula():
-    resultado = miPadron.loc[miPadron['Cedula'] == varCedula]   
+def ListaVotantePorCedula(miPadron,CedId):
+    resultado = miPadron.loc[miPadron['Cedula'] == CedId]
     return (resultado)
 
 #Calcula vontantes por sexo
 def votantesPorSexo(miPadron):
     miPadron['Sexo'] = miPadron['Sexo'].astype(str)
-    miPadron['Sexo'] = miPadron['Sexo'].replace({'1':'Masculino','2':'Fememino'})
+    miPadron['Sexo'] = miPadron['Sexo'].replace({'1':'Masculino','2':'Femenino'})
     resultado = miPadron['Sexo'].value_counts().reset_index()
     resultado.columns = ['Sexo','Cantidad']
     return (resultado)
+
+#Lista Votantes Mujeres
+def votantesFemenino(miPadron):
+    miPadron['Sexo'] = miPadron['Sexo'].astype(str)
+    miPadron['Sexo'] = miPadron['Sexo'].replace({'1':'Masculino','2':'Femenino'})
+    resultado = miPadron.loc[miPadron['Sexo'] =="Femenino"]
+    return (resultado.head(50))
+
+#Lista Vontantes Hombres
+def votantesMasculino(miPadron):
+    miPadron['Sexo'] = miPadron['Sexo'].astype(str)
+    miPadron['Sexo'] = miPadron['Sexo'].replace({'1':'Masculino','2':'Femenino'})
+    resultado = miPadron.loc[miPadron['Sexo'] =="Masculino"]
+    return (resultado.head(50))
+
 
 #cuenta distritos electorales por provincia 
 def DistritoPorProvincia(miDistrito):
@@ -45,11 +60,6 @@ def DistritoPorCanton(miDistrito):
     resultado = miDistrito['Canton'].value_counts().reset_index()
     resultado.columns = ['Canton','Distritos Electorales']
     return (resultado)
-
-##def CantonPorProvincia():
- #   cantonProvincia = miDistrito.groupby('Provincia').agg({'Canton'})
-     #resultado = miDistrito['Canton'].value_counts().reset_index()
-#    return print(cantonProvincia)
 
 
 
